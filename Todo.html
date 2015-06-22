@@ -1,32 +1,40 @@
 <html>
     <head>
         <title>To do applicatie</title>
+        <link rel="stylesheet" href="default.css"/>
     </head>
+
     <body>
         <h1>Todo Applicatie</h1>
-        <div>
+        <div id="list">
+            
             <h2>What needs to be done</h2>
             <ul>
-                <li><span>V</span> training ontwikkelen</li>
-                <li><span> </span> belastingaangifte doen</li>
-                <li><span> </span> motorrijtuigenbelasting betalen</li>
+                <li class="item" id="selectedtodo"><span>V</span> training ontwikkelen</li>
+                <li><span> </span> belastingaangifte doen
+                   <ul>
+                    <li>bla</li>
+                    <li>bla</li>
+                   </ul>
+                </li>
+                <li class="item"><span> </span> motorrijtuigenbelasting betalen</li>
             </ul>
         </div>
-        <div>
+        <div id="details">
             <h2>Details of the todo</h2>
             <strong>training ontwikkelen</strong>
             <p>Er moet een training SWIFT worden gemaakt</p>
         </div>
-        <div>
+        <div id="form">
             <h2>Insert a new todo</h2>
             <form>
-                <dd>
-                    <dt>Title</dt>
-                    <dd><input type="text" name="title" value="" default="titel"></input></dd>
+                <dl>
+                    <dt class="item">Title</dt>
+                    <dd><input type="text" name="title" value="" default="titel"></dd>
                     <dt>Description</dt>
-                    <dd><input type="text" name="description" value="" default="omschrijving"></input></dd>
-                </dd>
-                <input type="submit" value="voeg toe"/>
+                    <dd><input type="text" name="description" value="" default="omschrijving"></dd>
+                </dl>
+                <input type="submit" value="voeg toe">
             </form>
         </div>
     </body>
