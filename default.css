@@ -1,0 +1,27 @@
+/* element styles */
+body { background:linear-gradient(white, lightblue)}
+    
+/* id styles */
+div#list, div#details, div#form {
+    display:block;
+    padding:10px;
+    margin:10px;
+    width:250px;
+    border:1px solid black;
+    background-color:white;
+    border-radius:10px;
+    box-shadow:10px 10px 5px #888888;}
+    
+#landscape { display:none;}
+#portrait { display:inline;}
+
+/* alternative rendering */   
+@media screen and (orientation:landscape){
+  
+  div#list, div#details, div#form {
+     display:inline;
+     float:left;
+   }
+   #landscape { display:inline;}
+   #portrait { display:none;}
+}
