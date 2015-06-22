@@ -5,37 +5,67 @@
     </head>
 
     <body>
+        <style>
+            .hidden {display:none;}
+        </style>
+        
+        
         <h1>Todo Applicatie <small><span id="landscape">for landscape</span><span id="portrait">for portrait</span></small></small></h1>
         <div id="list">
             
             <h2>What needs to be done</h2>
-            <ul>
-                <li class="item" id="selectedtodo"><span>V</span> training ontwikkelen</li>
-                <li><span> </span> belastingaangifte doen
-                   <ul>
-                    <li>bla</li>
-                    <li>bla</li>
-                   </ul>
-                </li>
-                <li class="item"><span> </span> motorrijtuigenbelasting betalen</li>
+            <ul id="ullist" onclick="showDetails(event);">
+                
             </ul>
         </div>
         <div id="details">
             <h2>Details of the todo</h2>
-            <strong>training ontwikkelen</strong>
-            <p>Er moet een training SWIFT worden gemaakt</p>
+            <strong id="detailTitle"></strong>
+            <p id="detailDescription"></p>
         </div>
         <div id="form">
             <h2>Insert a new todo</h2>
             <form>
                 <dl>
                     <dt class="item">Title</dt>
-                    <dd><input type="text" name="title" value="" default="titel"></dd>
+                    <dd><input type="text" id="title" name="title" value="a new todo" default="titel"></dd>
                     <dt>Description</dt>
-                    <dd><input type="text" name="description" value="" default="omschrijving"></dd>
+                    <dd><input type="text" id="description" name="description" value="" default="omschrijving"></dd>
                 </dl>
-                <input type="submit" value="voeg toe">
+                <input type="submit" value="voeg toe" onclick="AddTodo();return false;">
             </form>
         </div>
     </body>
+    
+    <script>
+
+         function showDetails(){
+             
+             var target = window.event.target;
+             var title = target.parentElement.getElementsByTagName("span")[0];
+             var description = target.parentElement.getElementsByTagName("span")[1];
+             
+             var detailTitle = document.getElementById("detailTitle");
+             detailTitle.innerHTML = title.innerHTML;
+             
+             var detailDescription = document.getElementById("detailDescription");
+             detailDescription.innerHTML = description.innerHTML; 
+           
+            
+         }
+
+         function AddTodo(){
+                // lees de titel
+                var title = document.getElementById("title").value;
+                var description = document.getElementById("description").value;
+                var ullist = document.getElementById("ullist");
+                
+                
+                ullist.innerHTML = ullist.innerHTML + ("<li><span>" + title + "</span><span class='hidden'>" + description +"</span></li>");
+                
+            }
+            
+            
+        </script>
+    
 </html>
