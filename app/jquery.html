@@ -1,0 +1,43 @@
+<html>
+    <head>
+        <script src="http://code.jquery.com/jquery-1.11.3.js" type="text/javascript"></script>
+    </head>
+    <body><style>
+        .myclass { background-color:red;}
+        #cart { position:absolute; left:0px;top:50px;}
+        
+    </style>
+        
+        
+        <script>
+            $(function(){
+                $("#catalog").on('click', 'div', function(){
+                    $(this).detach().appendTo("#selected");
+                    })
+                $("#selected").on('click', 'div', function(){
+                    $(this).detach().appendTo("#catalog");
+                    })
+                
+                }); 
+        </script>
+
+       
+        
+        selected:
+        <div id="selected" style="width:200px;height:200px;border:1px solid black;">
+            
+            
+        </div>
+        catalog:
+        <div id="catalog"  style="width:200px;height:200px;border:1px solid black;">
+            <div>iPhone</div>
+            <div>iPod</div>
+            <div>iPad</div>
+            <div>iWatch</div>
+        </div>
+        
+        
+        <button id="mybutton">click me</button>
+        
+    </body>
+</html>

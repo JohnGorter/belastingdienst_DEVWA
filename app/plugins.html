@@ -1,0 +1,90 @@
+<html>
+    <head>
+        <script src="http://code.jquery.com/jquery-1.11.3.js" type="text/javascript"></script>
+        <script src="http://code.jquery.com/ui/1.11.3/jquery-ui.js" type="text/javascript"></script>
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/black-tie/jquery-ui.css" />
+   
+    </head>
+    <body>
+        
+        <style>
+            body { background-color: red}
+            input { position:relative;left:0px;}
+        </style>
+    <h1>Custom plugins</h1>
+        <form>
+            Name <input type="text" name="name" value="" /><br/>
+            Name2 <input type="text" name="name2" value="" /><br/>
+            Name3 <input type="text" name="name3" value="" /><br/>
+            Name4 <input type="text" name="name4" value="" /><br/>
+            <input type="button" id="btnSave" value="validate" />
+            
+            <input type="button" id="showDialog" value="toon" />
+        </form>
+        
+        <div id="dialog">hello world from dialog</div>
+        
+    </body>
+    
+    <script>
+        
+        // custom utility function...... applied using an IIFE
+        (function($){
+            $.john = function(){
+                console.log("tadaaa..");
+                };
+        })(jQuery);
+        
+        // custom WS function
+        (function($){
+            $.fn.dirty = function(){
+                this.change(function(){
+                    $(this).data('dirty', 'true');
+                    });
+                return this;
+            }
+            
+        })(jQuery);
+        
+        
+        // custom expression
+        (function($){
+            $.extend ($.expr[":"], {
+                dirty : function(element){
+                    return ($(element).data('dirty') == 'true');
+                }
+                });
+            })(jQuery);
+
+            
+            
+        $(function(){
+            // CALLING a utillity function
+            $.john();
+            
+            // calling a plugin, enable dirty tracking
+            $("input[type='text']").dirty();
+            
+            $("#btnSave").click(function(){
+                $("input").css('background-color', 'white');
+                $("input:dirty").css('background-color', 'yellow').animate({left:'400px'}, 1000).animate({left:'0px'}, 500);
+            });
+
+            // make a dialog
+            $("#dialog").dialog({autoOpen:false, modal:true, 
+                                buttons: [
+    { text: "Ok", icons: { primary: "ui-icon-heart" }, click: function() { $( this ).dialog( "close" );}},
+    { text: "Ok2", icons: { primary: "ui-icon-heart" }, click: function() { $( this ).dialog( "close" );}} ,
+    { text: "Ok3", icons: { primary: "ui-icon-heart" }, click: function() { $( this ).dialog( "close" );}} ,
+    { text: "Ok4", icons: { primary: "ui-icon-heart" }, click: function() { $( this ).dialog( "close" );}} 
+  ]
+                                
+                                });
+            $("#showDialog").click(function(){
+                $("#dialog").dialog("open");
+                });
+         });
+        
+        
+    </script>
+</html>
