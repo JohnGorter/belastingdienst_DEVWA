@@ -2,70 +2,67 @@
     <head>
         <title>To do applicatie</title>
         <link rel="stylesheet" href="default.css"/>
+         <script src="http://code.jquery.com/jquery-1.11.3.js" type="text/javascript"></script>
     </head>
 
     <body>
         <style>
-            .hidden {display:none;}
+            .h {display:none;}
         </style>
-        
         
         <h1>Todo Applicatie <small><span id="landscape">for landscape</span><span id="portrait">for portrait</span></small></small></h1>
         <div id="list">
-            
             <h2>What needs to be done</h2>
-            <ul id="ullist" onclick="showDetails(event);">
-                
+            <ul id="ullist">
             </ul>
         </div>
         <div id="details">
             <h2>Details of the todo</h2>
-            <strong id="detailTitle"></strong>
-            <p id="detailDescription"></p>
+            <strong id="detT"></strong>
+            <p id="detD"></p>
         </div>
         <div id="form">
             <h2>Insert a new todo</h2>
             <form>
                 <dl>
                     <dt class="item">Title</dt>
-                    <dd><input type="text" id="title" name="title" value="a new todo" default="titel"></dd>
+                    <dd><input type="text" id="t" name="t" value="a new todo" default="titel"></dd>
                     <dt>Description</dt>
-                    <dd><input type="text" id="description" name="description" value="" default="omschrijving"></dd>
+                    <dd><input type="text" id="d" name="descr" value="" default="omschrijving"></dd>
                 </dl>
-                <input type="submit" value="voeg toe" onclick="AddTodo();return false;">
+                <input type="button" value="voeg toe" id="btnAdd">
             </form>
         </div>
     </body>
     
     <script>
-
-         function showDetails(){
-             
-             var target = window.event.target;
-             var title = target.parentElement.getElementsByTagName("span")[0];
-             var description = target.parentElement.getElementsByTagName("span")[1];
-             
-             var detailTitle = document.getElementById("detailTitle");
-             detailTitle.innerHTML = title.innerHTML;
-             
-             var detailDescription = document.getElementById("detailDescription");
-             detailDescription.innerHTML = description.innerHTML; 
-           
-            
-         }
-
-         function AddTodo(){
-                // lees de titel
-                var title = document.getElementById("title").value;
-                var description = document.getElementById("description").value;
-                var ullist = document.getElementById("ullist");
-                
-                
-                ullist.innerHTML = ullist.innerHTML + ("<li><span>" + title + "</span><span class='hidden'>" + description +"</span></li>");
-                
-            }
-            
-            
-        </script>
+        
+    $(function(){
+      $("#btnAdd").click(function(){
+            $("<li>")
+                .append($("<span>").text($("#t").val()).addClass("t")).click(function(){ $("#detT").text($(".t", this).text()); $("#detD").text($(".h", this).text());})
+                .append($("<span>").text($("#d").val()).addClass("h"))
+                .append($("<span> DONE </span>").click(function(){ $(this).parent().fadeOut(200, function(){$(this).remove();})}))
+                .appendTo("#ullist");
+      });
+    }); 
+        /* 
+       $("#ullist").on('click', 'li', function(){
+                $("#detT").text($(".t", this).text());
+                $("#detD").text($(".h", this).text());
+            });
+    
+       
+       $("#btnAdd").click(function(){
+          $("<li>").append($("<span>").text($("#t").val()).addClass("t"))
+                   .append($("<span>").text($("#d").val()).addClass("h"))
+                   .append($("<span> REMOVE </span>").click(function(){
+                        $(this).parent().fadeOut();
+                    }))
+                   .appendTo("#ullist");
+         
+        });
+    });*/  
+    </script>
     
 </html>
