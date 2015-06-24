@@ -1,17 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html manifest="manifest.appcache">
     <head>
         <title>To do applicatie</title>
         <link rel="stylesheet" href="default.css"/>
-         <script src="http://code.jquery.com/jquery-1.11.3.js" type="text/javascript"></script>
-         <script src="http://code.jquery.com/ui/1.11.3/jquery-ui.js" type="text/javascript"></script>
-        <script src="http://modernizr.com/downloads/modernizr-latest.js" type="text/javascript"></script>
-        <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/black-tie/jquery-ui.css" />
+         <script src="jquery-1.11.3.js" type="text/javascript"></script>
+         <script src="jquery-ui.js" type="text/javascript"></script>
+        <script src="modernizr-latest.js" type="text/javascript"></script>
+        <link rel="stylesheet" href="jquery-ui.css" />
    
     </head>
 
     <body>
-        <header>Todo Applicatie <small><span id="landscape">for landscape</span><span id="portrait">for portrait</span></small></small></header>
+        <a href="/login.html">Klik hier voor het administration gedeelte</a>
+        
+        <header>Todo Applicatie 3.0 <small><span id="landscape">for landscape</span><span id="portrait">for portrait</span></small></small></header>
        
         <div id="list">
             <h2>What needs to be done</h2>
@@ -44,11 +46,27 @@
     </body>
     
     <script>
-        
+    var arrTodos = new Array();
+    
     $(function(){
-         $( "#ullist" ).sortable();
-         
-         $("#dialog").dialog({autoOpen:false, width:'450px', buttons: [{
+        $("body").css("background-color", "red");
+        if (navigator.onLine) {
+          $("body").css("background-color", "green");
+        }
+          
+        window.addEventListener('online', function(){
+            $("body").css("background-color", "green");
+            console.log('syncTodos();');
+            }, false);
+        window.addEventListener('offline', function(){
+            $("body").css("background-color", "red");
+            }, false);
+          
+        initDragAndDrop();
+        loadInitialData();
+        
+        $( "#ullist" ).sortable();
+        $("#dialog").dialog({autoOpen:false, width:'450px', buttons: [{
               text:"Cancel",
               click:function(){
                 $("#dialog").dialog("close");
@@ -56,34 +74,75 @@
             }, {
               text:"Save",
               click:function(){
-                  $("<li>")
-                        .append($("<span>").text($("#t").val()).addClass("t")).click(function(){ $("#detT").text($(".t", this).text()); $("#detD").text($(".h", this).text());})
-                        .append($("<span>").text($("#d").val()).addClass("h"))
-                        .append($("<span> DONE </span>").click(function(){ $(this).parent().fadeOut(200, function(){$(this).remove();})}))
-                        .appendTo("#ullist");
+                  addListItemForTodo($("#t").val(), $("#d").val());
+                  saveTodo($("#t").val(), $("#d").val());
                   $("#dialog").dialog("close");
               }
             }]});
-         $("#btnAddDialog").click(function(){ $("#dialog").dialog("open");});
+        $("#btnAddDialog").click(function(){ $("#dialog").dialog("open");});
         
-    }); 
-        /* 
-       $("#ullist").on('click', 'li', function(){
-                $("#detT").text($(".t", this).text());
-                $("#detD").text($(".h", this).text());
-            });
+    });
     
-       
-       $("#btnAdd").click(function(){
-          $("<li>").append($("<span>").text($("#t").val()).addClass("t"))
-                   .append($("<span>").text($("#d").val()).addClass("h"))
-                   .append($("<span> REMOVE </span>").click(function(){
-                        $(this).parent().fadeOut();
-                    }))
-                   .appendTo("#ullist");
-         
-        });
-    });*/  
+    function saveTodo(title, description){
+        if (navigator.onLine){
+            // $.ajax.....
+            console.log('saving item to the server...');
+        }
+        else {
+            console.log('saving item locally...');
+
+           arrTodos.push({"title":$("#t").val(), "description":$("#d").val()});
+           window.localStorage["todos"] = JSON.stringify(arrTodos);
+        }
+    }
+    function addListItemForTodo(title, description){
+        $("<li>")
+            .append($("<span>").text(title).addClass("t")).click(function(){ $("#detT").text($(".t", this).text()); $("#detD").text($(".h", this).text());})
+            .append($("<span>").text(description).addClass("h"))
+            .append($("<span> DONE </span>").click(function(){
+                $(this).parent().fadeOut(200, function(){$(this).remove();
+                for (a in arrTodos)
+                  if (arrTodos[a].title === title) arrTodos.splice(a, 1);
+                window.localStorage["todos"] = JSON.stringify(arrTodos);
+             })}))
+            .appendTo("#ullist");
+    }
+    
+        
+        
+          
+    function initDragAndDrop(){
+            var holder = document.getElementById("list");
+            holder.ondragover = function () { this.className = 'hover'; return false; };
+            holder.ondragend = function () { this.className = ''; return false; };
+            holder.ondrop = function (e) {
+              this.className = '';
+              e.preventDefault();
+    
+              var file = e.dataTransfer.files[0], reader = new FileReader();
+              reader.onload = function (event) {
+                arrTodos = JSON.parse(event.target.result);
+                window.localStorage["todos"] = JSON.stringify(arrTodos);
+                for (t in arrTodos)
+                    addListItemForTodo(arrTodos[t].title, arrTodos[t].description); 
+              };
+     
+              reader.readAsText(file);
+              return false;
+            };
+        }
+      
+           
+    
+    function loadInitialData(){
+    
+   
+    if (window.localStorage["todos"] != null){
+       arrTodos = JSON.parse(window.localStorage["todos"]);
+       for (t in arrTodos)
+          addListItemForTodo(arrTodos[t].title, arrTodos[t].description); 
+    }
+    }
     </script>
     
 </html>
